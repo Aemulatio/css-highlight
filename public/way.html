@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Selection</title>
+</head>
+<body>
+<p class="first"><b>Interdum </b><span> et </span><i>malesuada <b>fames </b></i><span>ac ante ipsum pr</span><b>imis</b><span> in faucibus. Proin a leo non risus interdum aliquet. Phasellus venenatis feugiat nisi id vehicula. Suspendisse feugiat tincidunt accumsan. Sed quis est id eros pulvinar aliquam. Ut sodales scelerisque blandit. Quisque ac sapien est.</span>
+</p>
+
+<script>
+    const wordsToSelect = ["interdum", "malesuada fames", "primis", "ut"];
+
+    function setSelectionForWord(word) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+
+        // Find the word in the paragraph
+        const nodes = document.querySelector('.first').childNodes;
+
+        let found = false;
+
+        for (let i = 0; i < nodes.length; i++) {
+            const currentNode = nodes[i];
+            if (currentNode.nodeType === Node.TEXT_NODE) {
+                const textContent = currentNode.textContent.toLowerCase();
+                const startIndex = textContent.indexOf(word);
+
+                if (startIndex !== -1) {
+                    range.setStart(currentNode, startIndex);
+                    range.setEnd(currentNode, startIndex + word.length);
+
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            console.log(`Word "${word}" not found in the paragraph.`);
+        }
+    }
+
+    // Iterate over the array and select each word
+    wordsToSelect.forEach(word => setSelectionForWord(word));
+</script>
+</body>
+</html>
